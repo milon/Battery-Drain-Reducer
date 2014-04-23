@@ -1,0 +1,17 @@
+﻿There Is A Partition Called dev/ In Our Phones Which Is Of 170Mb (Xperia Mini) And Is Only 2mb to 5mb Used...!
+So I Decided To Move Dalvik-Cache To This Partition...!
+
+This Is Wht Yuh Guyx Have To Do...!
+1). Do Make A Nandroid Backup Before Doing Any Thing (So That If Something Goes Wrong, Yuh Can Restore As It Were Before)
+2). Extract The Attached File Then Copy The Extracted File (02dalvik2cache) To /system/etc/init.d/ ==> Yuh Can Use Root Explorer To Do This...!
+3). Set Permission To rwxrwxrwx (Tick All)
+4). Restart
+
+First Boot Might Take Time...! Check Ur Internal Memory Nd If Everything Worked Fine U'll See The Difference And The Best Thing Is There Is No Performance Issue..!
+FOR THOSE PEOPLE WHO SAY WHY NOT MOVE IT TO SD-EXT...!
+=> Sd Cards Are Not Fast As The Internal Memory Even Yuh Have A Class 10 Card...!
+Moving Dalvik-Cache To Sd-Ext Might Lead Yuh To Performance Issues
+In My Opinion Never Move Dalvik-Cache Or Apps Data To Sd-Ext, It Will Slow Down Everything..! If Yuh Want To Move Just Move Applications...!
+
+If Anyone Wants To Correct Me.. Go Ahead...!
+IF THIS THING HELPED YUH HIT THANKX...!=)

@@ -1,0 +1,34 @@
+#!/system/bin/sh
+#This script moves /data/dalvik-cache to /dev/dalvik-cache
+
+echo "++++ DALVIK 2 DEV STARTING ++++"
+if [ ! -d /dev/dalvik-cache ]
+then
+        mkdir /dev/dalvik-cache
+        chown 1000:1000 /dev/dalvik-cache
+        chmod 775 /dev/dalvik-cache
+fi
+
+if [ -L /data/dalvik-cache ]
+then
+        rm -f /data/dalvik-cache
+        mkdir /data/dalvik-cache
+        chown 1000:1000 /data/dalvik-cache
+        chmod 775 /data/dalvik-cache
+elif [ ! -d /data/dalvik-cache ]
+then
+        mkdir /data/dalvik-cache
+        chown 1000:1000 /data/dalvik-cache
+        chmod 775 /data/dalvik-cache
+elif [ -d /data/dalvik-cache ]
+then
+        for filename in /data/dalvik-cache/*
+        do
+                if [ -L $filename ]
+                then 
+                        rm -f $filename
+                fi
+        done
+        mv /data/dalvik-cache/* /dev/dalvik-cache/
+fi
+mount -o bind /dev/dalvik-cache/ /data/dalvik-cache/

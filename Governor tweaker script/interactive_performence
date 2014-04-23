@@ -1,0 +1,7 @@
+#!/system/bin/sh
+
+#interactive performence tweak
+echo "80" > /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+echo "1400000" > /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
+echo "40000" > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+echo "20000" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate

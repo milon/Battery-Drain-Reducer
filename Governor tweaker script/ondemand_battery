@@ -1,0 +1,7 @@
+#!/system/bin/sh
+
+#ondemand battery tweak
+echo "95" /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
+echo "120000" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
+echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+echo "5" > /sys/devices/system/cpu/cpufreq/ondemand/down_differential

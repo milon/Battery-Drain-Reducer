@@ -1,0 +1,9 @@
+#!/system/bin/sh
+
+#lulzactive balanced performence tweak
+echo "90" > /sys/devices/system/cpu/cpufreq/lulzactive/inc_cpu_load
+echo "4" > /sys/devices/system/cpu/cpufreq/lulzactive/pump_up_step
+echo "1" > /sys/devices/system/cpu/cpufreq/lulzactive/pump_down_step
+echo "10000" > /sys/devices/system/cpu/cpufreq/lulzactive/up_sample_time
+echo "40000" > /sys/devices/system/cpu/cpufreq/lulzactive/down_sample_time
+echo "5" > /sys/devices/system/cpu/cpufreq/lulzactive/screen_off_min_step

@@ -1,0 +1,163 @@
+#!/system/xbin/busybox sh
+############# ############# #############
+# init.d.loader by puppet13th@xda
+# Version 0.6 29 Dec 2011
+# Required busybox installed on /system/xbin
+# Please use Busybox with sh and length applet
+# This script was tested using BusyBox v1.17.1
+# using /system/etc/install-recovery.sh to start
+# to run script in background append .bgrun to script name
+# example : "myscript.bgrun"
+# ############# ############# #############
+
+logfile=/data/init.d.loader.log
+loglength=65536
+bgrunsign='.bgrun'
+
+if [ -f $logfile ]
+	then
+	log=`cat $logfile`
+	currentloglength=`busybox length "$log"`
+	if [ $currentloglength -gt $loglength ]
+	then
+	rm -f $logfile
+	fi
+fi
+
+echo " * `date` * init.d.loader start . . .">>$logfile
+echo " ">>$logfile
+
+if [ "$1" = "install" ]
+then
+	echo " * starting init.d.loader installation . . .">>$logfile
+	echo " ">>$logfile
+	# remounting /system in RW mode
+	echo " i : remounting /system in RW mode . . .">>$logfile
+	mount -o remount rw /system 2>>$logfile
+	
+	# /system/etc/init.d folder
+	echo "  - checking /system/etc/init.d . . .">>$logfile
+
+	if [ -f /system/etc/init.d ]
+		then
+		rm -f /system/etc/init.d 2>>$logfile
+	fi
+
+	if [ -d /system/etc/init.d ]
+		then
+		echo " i : /system/etc/init.d folder exist!">>$logfile
+		else
+		echo " i : creating /system/etc/init.d folder . . .">>$logfile
+		mkdir /system/etc/init.d 2>>$logfile
+	fi
+
+	# /system/etc/install-recovery.sh file
+	echo "  - checking /system/etc/install-recovery.sh . . .">>$logfile
+	
+	if [ -f /system/etc/install-recovery.sh ]
+		then
+		# checking link2sd script in /system/etc/install-recovery.sh
+		cat /system/etc/install-recovery.sh|grep link2sd>/dev/null
+		if [ $? = 0 ]
+			then
+			echo " i : link2sd script detected in /system/etc/install-recovery.sh!">>$logfile
+			echo " i : moving /system/etc/install-recovery.sh to /system/etc/init.d/linksd . . .">>$logfile
+			mv /system/etc/install-recovery.sh /system/etc/init.d/link2sd 2>>$logfile
+		fi
+		# checking init.d.loader in /system/etc/install-recovery.sh
+		cat /system/etc/install-recovery.sh|grep /system/etc/init.d.loader>/dev/null
+		if [ $? = 0 ]
+			then
+			echo " i : init.d.loader exist in /system/etc/install-recovery.sh!">>$logfile
+			else
+			echo " i : inserting init.d.loader in /system/etc/install-recovery.sh . . .">>$logfile
+			echo /system/etc/init.d.loader>>install-recovery.sh 2>>$logfile
+		fi
+		else
+		echo " i : creating /system/etc/install-recovery.sh . . .">>$logfile
+		echo "#!/system/xbin/busybox sh">/system/etc/install-recovery.sh 2>>$logfile
+		echo "/system/etc/init.d.loader">>/system/etc/install-recovery.sh 2>>$logfile
+		chmod 755 /system/etc/install-recovery.sh 2>>$logfile
+	fi
+
+	# /system/etc/init.d.loader file
+	echo "  - checking /system/etc/init.d.loader . . .">>$logfile
+	if [ -f /system/etc/init.d.loader ]
+		then
+		echo " i : /system/etc/init.d.loader exist!">>$logfile
+		echo " i : checking version . . .">>$logfile
+		currentver=`cat $0 |grep -m 1 '# Version'` 2>>$logfile
+		filever=`cat /system/etc/init.d.loader |grep -m 1 '# Version'` 2>>$logfile
+		if [ "$filever" = "$currentver" ]
+			then
+			echo " i : version match!">>$logfile
+			else
+			echo " i : version mismatch!">>$logfile
+			echo " i : Updating /system/etc/init.d.loader . . .">>$logfile
+			cp $0 /system/etc/init.d.loader 2>>$logfile
+			chmod 755 /system/etc/init.d.loader 2>>$logfile
+		fi
+		else
+		echo " i : creating /system/etc/inid.d.loader . . .">>$logfile
+		cp $0 /system/etc/init.d.loader 2>>$logfile
+		chmod 755 /system/etc/init.d.loader 2>>$logfile
+	fi
+	# remounting /system in RO mode
+	sync
+	echo " i : remounting /system in RO mode . . .">>$logfile
+	mount -o remount ro /system 2>>$logfile
+	echo "  - init.d.loader installation complete . . . ">>$logfile
+	echo please check $logfile for more information . . .
+fi
+
+if [ "$1" = "fixprem" ]
+	then
+	echo " ">>$logfile
+	echo " i : fixing scripts owner and premission in init.d folder . . .">>$logfile
+	echo "  - chown scripts . . .">>$logfile
+	chown 0 /system/etc/init.d/* 2>>$logfile
+	echo "  - chgrp scripts . . .">>$logfile
+	chgrp 0 /system/etc/init.d/* 2>>$logfile
+	echo "  - chmod scripts . . .">>$logfile
+	chmod 755 /system/etc/init.d/* 2>>$logfile
+	echo please check $logfile for more information . . .
+fi
+
+#running all script on /system/etc/init.d/
+if [ "$0" = "/system/etc/init.d.loader" ]
+	then
+	echo " ">>$logfile
+	echo " i : running init.d scripts . . .">>$logfile
+	for script in /system/etc/init.d/*
+	do
+		if [ -x $script ]
+		then
+		bgrun=`grep $bgrunsign $script`>/dev/null
+			if [ $? = 0 ]
+			then
+			echo "  - running $script in background . . .">>$logfile
+			/system/xbin/busybox sh $script & >>$logfile 2>>$logfile
+			else
+			echo "  - running $script . . .">>$logfile
+			/system/xbin/busybox sh $script>>$logfile 2>>$logfile
+			fi
+		fi
+	done
+	else
+	if [ "$1" == "" ]
+	then
+		echo " i : displaying help . . . ">>$logfile
+		echo ""
+		echo " init.d loader script by PuPPeT13th@XDA "
+		echo " Usage : $0 [function] "
+		echo ""
+		echo " Function : "
+		echo " - install --> install init.d.loader "
+		echo " - fixprem --> fix scripts owner and premission in init.d folder "
+		echo ""
+	fi
+fi
+
+echo " ">>$logfile
+echo " * `date` * init.d.loader end . . .">>$logfile
+echo " ">>$logfile

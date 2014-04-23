@@ -1,0 +1,6 @@
+#!/system/bin/sh
+
+#EXT4 tweak- perfect mount options
+busybox mount -o remount,noatime,noauto_da_alloc,nodiratime,barrier=0,nobh /system
+busybox mount -o remount,noatime,noauto_da_alloc,nosuid,nodev,nodiratime,barrier=0,nobh /data
+busybox mount -o remount,noatime,noauto_da_alloc,nosuid,nodev,nodiratime,barrier=0,nobh /cache

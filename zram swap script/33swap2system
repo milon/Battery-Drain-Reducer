@@ -1,0 +1,22 @@
+#!/system/bin/sh
+# Swap On System partition, based on script by inteks (http://goo.gl/HcDBQ)
+if busybox [ ! -f /system/swap/swapfile.swp ]
+then
+	echo "Create Swapfile"
+	mkdir /system/swap
+	busybox dd if=/dev/zero of=/system/swap/swapfile.swp bs=1M count=64
+	busybox mkswap /system/swap/swapfile.swp
+	busybox chmod 0600 /system/swap/swapfile.swp
+else
+	echo "Swapfile Exist"
+fi
+echo "connect loop devices"
+mknod -m640 /dev/block/loop51 b 7 51
+losetup /dev/block/loop51 /system/swap/swapfile.swp
+echo "use loopdev for swap"
+busybox swapon /dev/block/loop51
+echo "raise swappiness 2 "
+echo 90 > /proc/sys/vm/swappiness
+cat /proc/sys/vm/swappiness
+free
+

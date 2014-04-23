@@ -1,0 +1,4 @@
+#!/system/xbin/busybox sh
+# init.d.loader tester
+# check /data/init.d.loader.test
+echo init.d.loader test >/data/init.d.loader.test

@@ -1,0 +1,21 @@
+#!/system/bin/sh
+if busybox [ ! -f /cache/swap/swapfile.swp ]
+then
+	echo "Create Swapfile"
+	mkdir /cache/swap
+	busybox dd if=/dev/zero of=/cache/swap/swapfile.swp bs=1M count=64
+	busybox mkswap /cache/swap/swapfile.swp
+	busybox chmod 0600 /cache/swap/swapfile.swp
+else
+	echo "Swapfile Exist"
+fi
+echo "connect loop devices"
+mknod -m640 /dev/block/loop50 b 7 50
+losetup /dev/block/loop50 /cache/swap/swapfile.swp
+echo "use loopdev for swap"
+busybox swapon /dev/block/loop50
+echo "raise swappiness 2 "
+echo 90 > /proc/sys/vm/swappiness
+cat /proc/sys/vm/swappiness
+free
+

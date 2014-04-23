@@ -1,0 +1,4 @@
+#!/system/bin/sh
+
+#Remove logger
+rm /dev/log/main

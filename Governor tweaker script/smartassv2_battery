@@ -1,0 +1,12 @@
+#!/system/bin/sh
+
+#smartassv2 battery tweak
+echo "500000" > /sys/devices/system/cpu/cpufreq/smartass/awake_ideal_freq;
+echo "200000" > /sys/devices/system/cpu/cpufreq/smartass/sleep_ideal_freq;
+echo "500000" > /sys/devices/system/cpu/cpufreq/smartass/sleep_wakeup_freq
+echo "85" > /sys/devices/system/cpu/cpufreq/smartass/max_cpu_load;
+echo "70" > /sys/devices/system/cpu/cpufreq/smartass/min_cpu_load;
+echo "200000" > /sys/devices/system/cpu/cpufreq/smartass/ramp_up_step;
+echo "200000" > /sys/devices/system/cpu/cpufreq/smartass/ramp_down_step;
+echo "48000" > /sys/devices/system/cpu/cpufreq/smartass/up_rate_us
+echo "49000" > /sys/devices/system/cpu/cpufreq/smartass/down_rate_us

@@ -1,0 +1,20 @@
+To "install" this, just adb push the two files in the zip below onto your phone with:
+
+Code:
+adb shell mount -o remount,rw /system
+adb push zipalign /system/bin
+adb push zipalign_apks /system/sd/zipalign_apks.sh
+adb shell chmod 755 /system/bin/zipalign /system/sd/zipalign_apks.sh
+adb shell mount -o remount,ro /system
+
+Then anytime you want to run the script just do:
+
+Code:
+adb shell sh /system/sd/zipalign_apks.sh
+
+
+Or in terminal:
+
+Code:
+su
+sh /system/sd/zipalign_apks.sh

@@ -1,0 +1,8 @@
+#!/system/bin/sh
+
+#conservative performence tweak
+echo "60" > /sys/devices/system/cpu/cpufreq/conservative/up_threshold
+echo "40000" > /sys/devices/system/cpu/cpufreq/conservative/sampling_rate
+echo "5" > /sys/devices/system/cpu/cpufreq/conservative/sampling_down_factor
+echo "20" > /sys/devices/system/cpu/cpufreq/conservative/down_threshold
+echo "25" > /sys/devices/system/cpu/cpufreq/conservative/freq_step

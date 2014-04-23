@@ -1,0 +1,8 @@
+#!/system/bin/sh
+
+#conservative battery tweak
+echo "95" > /sys/devices/system/cpu/cpufreq/conservative/up_threshold
+echo "120000" > /sys/devices/system/cpu/cpufreq/conservative/sampling_rate
+echo "1" > /sys/devices/system/cpu/cpufreq/conservative/sampling_down_factor
+echo "40" > /sys/devices/system/cpu/cpufreq/conservative/down_threshold
+echo "10" > /sys/devices/system/cpu/cpufreq/conservative/freq_step

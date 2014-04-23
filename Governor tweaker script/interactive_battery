@@ -1,0 +1,7 @@
+#!/system/bin/sh
+
+#interactive battery tweak
+echo "95" > /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+echo "1000000" > /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
+echo "10000" > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+echo "40000" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate

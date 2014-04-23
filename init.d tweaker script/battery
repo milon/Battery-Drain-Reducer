@@ -1,0 +1,7 @@
+#!/system/bin/sh
+
+#battery tweaks
+echo "500" > /proc/sys/vm/dirty_expire_centisecs
+echo "1000" > /proc/sys/vm/dirty_writeback_centisecs
+echo "60" > /proc/sys/vm/dirty_background_ratio
+echo "95" > /proc/sys/vm/dirty_ratio

@@ -1,0 +1,10 @@
+#!/system/bin/sh
+
+#repaire mms db
+
+echo "CREATE TABLE if not exists contacts1  (thread_id INTEGER,  contact_id INTEGER DEFAULT 0);" > /data/local/repairesms.sql
+echo "CREATE TABLE if not exists contacts2  (thread_id INTEGER,  contact_id INTEGER DEFAULT 0);" >> /data/local/repairesms.sql
+echo "CREATE VIEW if not exists contacts AS SELECT * FROM contacts1;" >> /data/local/repairesms.sql
+echo "CREATE VIEW if not exists contact_threads AS SELECT contact_id AS _id, date, SUM(message_count) AS message_count, recipient_ids, recipient_address, snippet, snippet_cs, read, SUM(unread_count) AS unread_count, body, name, priority, type, error, has_attachment, transport_type , msg_box, locked, htc_category  FROM (SELECT * FROM threads_list WHERE message_count > 0 ORDER BY date ASC) T LEFT JOIN contacts1 ON T._id = contacts1.thread_id GROUP BY contact_id;" >> /data/local/repairesms.sql
+
+/system/xbin/sqlite3 /data/data/com.android.providers.telephony/databases/mmssms.db < /data/local/repairesms.sql
