@@ -1,0 +1,39 @@
+Energy Efficient Operating System for Android Powered Smart Devices
+=======================================================================================
+The whole process work on three state-
+
+First time boot changes
+---------------------------------------------------------------------------------------
+--> Deodex the rom
+--> Zipalign
+--> Hook into Supercharger script
+--> Enable 5GHz Wi-Fi band
+--> Enable init.d(if the rom does not support it)
+
+Boot time hook(works on every boot)
+---------------------------------------------------------------------------------------
+--> First boot up the mobile
+--> Load all kernel component(.ko files) and shared object(.so files).
+--> Load all custom component(.jar files) and script(init.d, build.prop etc).
+--> We do some build.prop changes to tweak system.
+--> We hook on the system from init.d script.(It execute after 30 seconds of boot.)
+	=> Change CPU Governor
+		-> Assign voltage frequency
+		-> Governor specific battery tweak
+		-> Governor specific performance tweak
+	=> Change I/O Scheduler
+	=> Battery tweak
+	=> De-fragment SQLite Database
+	=> Disable normalize sleeper
+	=> Mount ext4 partition
+	=> Increase cache size
+	=> Remove logger
+	=> Increase microSD read and write speed
+	=> Move dalvik cache to /system partision
+	=> Swap zRAM
+	=> Load Xposed Framework-XposedBridge.jar(with some of its battery saver module)
+
+On service state
+---------------------------------------------------------------------------------------
+--> Apply AD blocker
+--> SQLite synchronization off
